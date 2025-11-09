@@ -108,7 +108,7 @@ export default function Home() {
         แผนการเรียน ภาษาอังกฤษ – คณิตศาสตร์
       </p>
       <p className="ml-8 flex items-center gap-2 text-gray-600 mt-1">
-        <FaCalendarAlt className="text-gray-500" /> 2560 – 2562
+        <FaCalendarAlt className="text-gray-500" /> 2560 – 2566
       </p>
     </div>
 
