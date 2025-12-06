@@ -27,12 +27,21 @@ export default function Home() {
     {
       id: 2,
       title: "Software engineering (Booking room)",
-      image: "/Screenshot 2568-12-05 at 11.46.12.png", // ไม่มีรูป
+      image: "/Screenshot 2568-12-06 at 20.23.54.png", // ไม่มีรูป
       description: "โปรเจ็กต์นี้เกี่ยวกับงานภายในคลาสของผมครับ คือ การทำระบบการจัดการจองห้องประชุมและห้องเรียนภายในมหาวิทยาลัย เพื่อแก้ปัญหาการจองห้องที่ซับซ้อนและลดความผิดพลาดในการจัดการตารางเวลา โดยมีการใช้ Use Case Diagram และ Data Flow Diagram (DFD Level 0-2) เพื่อจำลองการไหลของข้อมูลและการทำงานของระบบ มีการจัดทำ Structure Chart เพื่อวางโครงสร้างโมดูลการทำงาน เช่น การจอง และยังมีการออกแบบระบบให้รองรับการทำงานผ่าน Web Application และมีการเชื่อมต่อฐานข้อมูล (เช่น Google Firebase)",
       link: "/Software",
       buttonText: "Do more",
       type: "website"
     },
+    {
+      id: 3,
+      title: "Figma design in Software engineering ",
+      image: "/Screenshot 2568-12-05 at 11.46.12.png", // ไม่มีรูป
+      description: "โปรเจ็กต์นี้เกี่ยวกับงานภายในคลาสของผมครับ คือ การทำระบบการจัดการจองห้องประชุมและห้องเรียนภายในมหาวิทยาลัย ในส่วนของการออกแบบ Prototype ก่อนนำไป implememt จริง โดยมีการออกแบบให้ใช้ง่าย มีระบบที่ไม่ซับซ้อน สามารถจัดการได้ง่าย",
+      link: "/Software/Figma",
+      buttonText: "Do more",
+      type: "website"
+    }
   ];
 
   return (
