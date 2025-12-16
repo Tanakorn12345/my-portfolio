@@ -52,6 +52,17 @@ export default function Home() {
       link: "/Software/Figma",
       buttonText: language === 'th' ? "ดูเพิ่มเติม" : "Do more",
       type: "website"
+    } ,
+    {
+      id: 4,
+      title: "Figma design in Line girl",
+      image: "/figma-linegirl/Screenshot 2568-12-16 at 13.45.58.png",
+      description: language === 'th'
+        ? "โปรเจ็กต์นี้เกี่ยวกับงานภายในคลาสของผมครับ คือ การออกแบบเว็บแอปพลิเคชัน ซึ่งมีต้นแบบเป็นธุรกิจ Line Man โดยในส่วนนี้คือการออกแบบ UX/UI ของเว็บก่อนนำไป implement ดีไซน์ที่ดูสบายตา ใช้งานง่าย ไม่ซับซ้อน พร้อมระบบจัดการหลังบ้านที่ชัดเจน เพื่อให้มั่นใจในประสิทธิภาพของ Flow การทำงานก่อนเริ่มเขียนโค้ดจริง"
+        : "This project is for my class: designing a web application based on the Line Man business model. This part involves designing the UX/UI of the website before implementation. The design focuses on a clean, user-friendly, and uncluttered interface, along with a clear backend management system to ensure efficient workflow before starting to write the actual code.",
+      link: "/linegirl/figma",
+      buttonText: language === 'th' ? "ดูเพิ่มเติม" : "Do more",
+      type: "website"
     }
   ];
 
