@@ -3,8 +3,9 @@ import Image from "next/image";
 import Navbar from "@/app/components/Navbar";
 import SkillsSection from "@/app/components/SkillsSection";
 import ProjectCard from "@/app/components/Projectcard";
+import InternshipSection from '@/app/components/InternshipSection';
 
-// 1. นำเข้า Hook (ไม่ต้องนำเข้า translations แล้ว)
+// 1. นำเข้า Hook 
 import { useLanguage } from "@/app/context/LanguageContext";
 
 // Icons
@@ -19,7 +20,7 @@ export default function Home() {
   // 2. เรียกใช้ Hook เพื่อดึงค่าภาษาปัจจุบัน
   const { language } = useLanguage();
 
-  // 3. ข้อมูล Projects (กำหนดข้อความตรงนี้เลย)
+  // 3. ข้อมูล Projects
   const projects = [
     {
       id: 1,
@@ -30,7 +31,8 @@ export default function Home() {
         : "This project relates to my classwork involving web application design, modeled after Line Man but focusing on pick-up orders. I was responsible for the Front-end, ensuring UX/UI consistency with the prototype and connecting with the Back-end for functionality. Key features include easy system management, systematic user role separation, and Agile development methodology. See more details on GitHub.",
       link: "https://github.com/Tanakorn12345/testweb",
       buttonText: "View on GitHub",
-      type: "github"
+      type: "github",
+      status: "success"
     },
     {
       id: 2,
@@ -41,7 +43,8 @@ export default function Home() {
         : "A university room booking management system project designed to solve complexity and scheduling errors. Utilizing Use Case Diagrams, DFDs (Level 0-2), and Structure Charts to model data flow and modules like booking. The system is designed as a Web Application integrated with Google Firebase.",
       link: "/Software",
       buttonText: language === 'th' ? "ดูเพิ่มเติม" : "Do more",
-      type: "website"
+      type: "website",
+      status: "success"
     },
     {
       id: 3,
@@ -52,7 +55,8 @@ export default function Home() {
         : "This project focuses on the UI/UX Prototype design for the university room booking system using Figma. The goal was to create a user-friendly, uncomplicated interface that is easy to manage before actual implementation.",
       link: "/Software/Figma",
       buttonText: language === 'th' ? "ดูเพิ่มเติม" : "Do more",
-      type: "website"
+      type: "website",
+      status: "success"
     } ,
     {
       id: 4,
@@ -63,7 +67,8 @@ export default function Home() {
         : "This project is for my class: designing a web application based on the Line Man business model. This part involves designing the UX/UI of the website before implementation. The design focuses on a clean, user-friendly, and uncluttered interface, along with a clear backend management system to ensure efficient workflow before starting to write the actual code.",
       link: "/linegirl/figma",
       buttonText: language === 'th' ? "ดูเพิ่มเติม" : "Do more",
-      type: "website"
+      type: "website",
+      status: "success"
     } ,
     {
       id: 5,
@@ -72,10 +77,33 @@ export default function Home() {
       description: language === 'th'
         ? "โปรเจ็กต์นี้เกี่ยวกับงานภายในคลาสของผมครับ คือ การออกแบบเว็บแอปพลิเคชัน ซึ่งมีต้นแบบเป็นธุรกิจ Line Man โดยในส่วนนี้คือการออกแบบ UX/UI ของเว็บก่อนนำไป implement ดีไซน์ที่ดูสบายตา ใช้งานง่าย ไม่ซับซ้อน พร้อมระบบจัดการหลังบ้านที่ชัดเจน เพื่อให้มั่นใจในประสิทธิภาพของ Flow การทำงานก่อนเริ่มเขียนโค้ดจริง"
         : "This project is for my class: designing a web application based on the Line Man business model. This part involves designing the UX/UI of the website before implementation. The design focuses on a clean, user-friendly, and uncluttered interface, along with a clear backend management system to ensure efficient workflow before starting to write the actual code.",
-      link: "/linegirl/figma",
+      link: "",
       buttonText: language === 'th' ? "ดูเพิ่มเติม" : "Do more",
-      type: "website"
+      type: "website",
+      status: "in-progress"
     }
+  ];
+
+  // 4. ข้อมูล Internship (กำหนดเป็น Object ตามที่คุณต้องการ)
+  const internships = [
+    {
+      id: 1,
+      role: "IT Support Intern", 
+      company: language === 'th' ? "บริษัท เอ็กซ์ซี จำกัด" : "Exzy Co., Ltd.",
+      duration: language === 'th' ? "20 พฤษภาคม 2569 - 31 กรกฎาคม 2569" : "20 May 2026 - 31 July 2026",
+      logoSrc: "/internship/logo exzy.jpg",
+      responsibilities: language === 'th' ? [
+        "พัฒนาระบบและแอปพลิเคชันภายในของกระทรวงฯ เพื่อเพิ่มประสิทธิภาพในการดำเนินงาน",
+        "ทำงานร่วมกับทีมผู้เชี่ยวชาญด้าน IT ในการจัดการระบบฐานข้อมูลและการรักษาความปลอดภัยของข้อมูล (Cybersecurity)",
+        "เรียนรู้และประยุกต์ใช้เทคโนโลยีสมัยใหม่ในการแก้ปัญหาจริงระดับองค์กร"
+      ] : [
+        "Developed internal systems and applications for the Ministry to improve operational efficiency.",
+        "Collaborated with IT experts in database management and cybersecurity.",
+        "Learned and applied modern technologies to solve real-world organizational problems."
+      ],
+      techStack: ['Intelligent Hub'] // เพิ่มหรือลดได้ตามจริง
+    }
+    // ถ้าอนาคตมีที่ฝึกงานเพิ่มเติม ก็ก๊อปปี้ Object นี้ต่อลงมาได้เลย
   ];
 
   return (
@@ -152,19 +180,18 @@ export default function Home() {
                 </span>
               </p>
               <p className="flex items-center gap-3">
-  <a
-    href="https://www.linkedin.com/in/tanakorn-tipwarreerattana-1a6053364?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="flex items-center gap-3"
-  >
-    <FaLinkedin className="text-black dark:text-white text-3xl cursor-pointer" />
-    <span>
-      <strong>LinkedIn :</strong> Tanakorn Tipwarreerattana
-    </span>
-  </a>
-</p>
-
+                <a
+                  href="https://www.linkedin.com/in/tanakorn-tipwarreerattana-1a6053364?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3"
+                >
+                  <FaLinkedin className="text-black dark:text-white text-3xl cursor-pointer" />
+                  <span>
+                    <strong>LinkedIn :</strong> Tanakorn Tipwarreerattana
+                  </span>
+                </a>
+              </p>
             </div>
           </div>
 
@@ -234,26 +261,36 @@ export default function Home() {
               link={project.link}          
               buttonText={project.buttonText}
               type={project.type}
+              status={project.status}
             />
           ))}
         </div>
-
-        
       </section>
 
-       <section className="bg-gray-50 dark:bg-zinc-800 px-10 py-10 flex flex-col items-center transition-colors duration-300">
-        <div className="max-w-6xl w-full space-y-10">
+      {/* INTERNSHIP SECTION */}
+      <section className="bg-white dark:bg-zinc-900 px-10 py-10 flex flex-col items-center transition-colors duration-300">
+        <div className="max-w-6xl w-full">
           <h2 className="text-3xl font-semibold text-gray-800 dark:text-white mb-10 border-b-4 border-blue-500 inline-flex items-center gap-3 pb-2">
             <CgWorkAlt className="text-blue-500 size-9" />
             {language === 'th' ? "การฝึกงาน" : "INTERNSHIP"}
           </h2>
           
-
-          {/* วนลูปเรียกใช้ ProjectCard */}
+          {/* วนลูปเรียกใช้ InternshipSection ที่เราแปลงเป็น Card แล้ว */}
+          <div className="w-full space-y-8">
+            {internships.map((internship) => (
+              <InternshipSection 
+                key={internship.id}
+                role={internship.role}
+                company={internship.company}
+                duration={internship.duration}
+                responsibilities={internship.responsibilities}
+                techStack={internship.techStack}
+                logoSrc={internship.logoSrc}
+              />
+            ))}
+          </div>
           
         </div>
-
-        
       </section>
     </>
   );
