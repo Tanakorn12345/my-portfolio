@@ -13,6 +13,7 @@ import { RiAccountCircleLine, RiAdminFill } from "react-icons/ri";
 import { IoMdPhonePortrait } from "react-icons/io";
 import { MdAttachEmail } from "react-icons/md";
 import { PiProjectorScreenFill } from "react-icons/pi";
+import { CgWorkAlt } from "react-icons/cg";
 
 export default function Home() {
   // 2. เรียกใช้ Hook เพื่อดึงค่าภาษาปัจจุบัน
@@ -56,6 +57,17 @@ export default function Home() {
     {
       id: 4,
       title: "Figma design in Line girl",
+      image: "/figma-linegirl/Screenshot 2568-12-16 at 13.45.58.png",
+      description: language === 'th'
+        ? "โปรเจ็กต์นี้เกี่ยวกับงานภายในคลาสของผมครับ คือ การออกแบบเว็บแอปพลิเคชัน ซึ่งมีต้นแบบเป็นธุรกิจ Line Man โดยในส่วนนี้คือการออกแบบ UX/UI ของเว็บก่อนนำไป implement ดีไซน์ที่ดูสบายตา ใช้งานง่าย ไม่ซับซ้อน พร้อมระบบจัดการหลังบ้านที่ชัดเจน เพื่อให้มั่นใจในประสิทธิภาพของ Flow การทำงานก่อนเริ่มเขียนโค้ดจริง"
+        : "This project is for my class: designing a web application based on the Line Man business model. This part involves designing the UX/UI of the website before implementation. The design focuses on a clean, user-friendly, and uncluttered interface, along with a clear backend management system to ensure efficient workflow before starting to write the actual code.",
+      link: "/linegirl/figma",
+      buttonText: language === 'th' ? "ดูเพิ่มเติม" : "Do more",
+      type: "website"
+    } ,
+    {
+      id: 5,
+      title: "Mobile application 'PetPoint' ",
       image: "/figma-linegirl/Screenshot 2568-12-16 at 13.45.58.png",
       description: language === 'th'
         ? "โปรเจ็กต์นี้เกี่ยวกับงานภายในคลาสของผมครับ คือ การออกแบบเว็บแอปพลิเคชัน ซึ่งมีต้นแบบเป็นธุรกิจ Line Man โดยในส่วนนี้คือการออกแบบ UX/UI ของเว็บก่อนนำไป implement ดีไซน์ที่ดูสบายตา ใช้งานง่าย ไม่ซับซ้อน พร้อมระบบจัดการหลังบ้านที่ชัดเจน เพื่อให้มั่นใจในประสิทธิภาพของ Flow การทำงานก่อนเริ่มเขียนโค้ดจริง"
@@ -210,6 +222,7 @@ export default function Home() {
             <PiProjectorScreenFill className="text-blue-500" />
             {language === 'th' ? "โปรเจกต์ของฉัน" : "MY PROJECTS"}
           </h2>
+          
 
           {/* วนลูปเรียกใช้ ProjectCard */}
           {projects.map((project) => (
@@ -224,6 +237,23 @@ export default function Home() {
             />
           ))}
         </div>
+
+        
+      </section>
+
+       <section className="bg-gray-50 dark:bg-zinc-800 px-10 py-10 flex flex-col items-center transition-colors duration-300">
+        <div className="max-w-6xl w-full space-y-10">
+          <h2 className="text-3xl font-semibold text-gray-800 dark:text-white mb-10 border-b-4 border-blue-500 inline-flex items-center gap-3 pb-2">
+            <CgWorkAlt className="text-blue-500 size-9" />
+            {language === 'th' ? "การฝึกงาน" : "INTERNSHIP"}
+          </h2>
+          
+
+          {/* วนลูปเรียกใช้ ProjectCard */}
+          
+        </div>
+
+        
       </section>
     </>
   );
