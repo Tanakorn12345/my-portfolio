@@ -45,7 +45,7 @@ export default function InternshipsAdmin() {
 
   const fetchInternships = async () => {
     try {
-      const res = await fetch('/api/internships`)
+      const res = await fetch(`/api/internships`)
       const data = await res.json()
       setInternships(data)
     } catch (error) {
@@ -66,7 +66,7 @@ export default function InternshipsAdmin() {
       if (imageFile) {
         const uploadData = new FormData();
         uploadData.append('image', imageFile);
-        const uploadRes = await fetch('/api/upload`, {
+        const uploadRes = await fetch(`/api/upload`, {
           method: 'POST',
           body: uploadData
         });
@@ -77,8 +77,8 @@ export default function InternshipsAdmin() {
       }
 
       const url = editId 
-        ? '/api/internships/${editId}` 
-        : '/api/internships`
+        ? `/api/internships/${editId}` 
+        : `/api/internships`
       const method = editId ? 'PUT' : 'POST'
 
       await fetch(url, {
@@ -102,7 +102,7 @@ export default function InternshipsAdmin() {
   const handleDelete = async (id) => {
     if (confirm('คุณต้องการลบข้อมูลนี้ใช่หรือไม่?')) {
       try {
-        await fetch('/api/internships/${id}`, {
+        await fetch(`/api/internships/${id}`, {
           method: 'DELETE'
         })
         fetchInternships()

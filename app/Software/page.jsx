@@ -13,7 +13,7 @@ function Page() {
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        const res = await fetch('/api/projects`);
+        const res = await fetch(`/api/projects`);
         const data = await res.json();
         // Find the project that matches this URL
         const project = data.find(p => p.projectUrl === '/Software');

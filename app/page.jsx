@@ -29,9 +29,9 @@ export default function Home() {
     const fetchData = async () => {
       try {
         const [projRes, intRes, profRes] = await Promise.all([
-          fetch('/api/projects`),
-          fetch('/api/internships`),
-          fetch('/api/profile`)
+          fetch(`/api/projects`),
+          fetch(`/api/internships`),
+          fetch(`/api/profile`)
         ]);
         
         if (projRes.ok) {

@@ -16,7 +16,7 @@ export default function InternshipDetail() {
   useEffect(() => {
     const fetchInternship = async () => {
       try {
-        const res = await fetch('/api/internships/${id}`)
+        const res = await fetch(`/api/internships/${id}`)
         if (!res.ok) {
           router.push('/')
           return

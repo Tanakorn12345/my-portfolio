@@ -13,7 +13,7 @@ export default function ProfileAdmin() {
 
   const fetchProfile = async () => {
     try {
-      const res = await fetch('/api/profile`)
+      const res = await fetch(`/api/profile`)
       const data = await res.json()
       if (data.id) {
         setProfile(data)
@@ -38,8 +38,8 @@ export default function ProfileAdmin() {
     e.preventDefault()
     try {
       const url = profile?.id 
-        ? '/api/profile/${profile.id}` 
-        : '/api/profile`
+        ? `/api/profile/${profile.id}` 
+        : `/api/profile`
       const method = profile?.id ? 'PUT' : 'POST'
 
       await fetch(url, {

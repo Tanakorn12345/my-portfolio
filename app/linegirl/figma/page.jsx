@@ -13,7 +13,7 @@ function Page() {
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        const res = await fetch('/api/projects`);
+        const res = await fetch(`/api/projects`);
         const data = await res.json();
         const project = data.find(p => p.projectUrl === '/linegirl/figma');
         if (project && project.content) {

@@ -13,7 +13,7 @@ export default function VisitorTracker() {
 
     const trackVisit = async () => {
       try {
-        await fetch('/api/visitors`, {
+        await fetch(`/api/visitors`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
