@@ -25,22 +25,22 @@ model Profile {
 }
 
 model Skill {
-  id        String   @id @default(uuid())
-  name      String
-  category  String?  // e.g., "Frontend", "Backend", "Tools"
-  icon      String?  
-  order     Int      @default(0)
+  id       String  @id @default(uuid())
+  name     String
+  category String?
+  icon     String?
+  order    Int     @default(0)
 }
 
 model Education {
-  id           String   @id @default(uuid())
+  id           String  @id @default(uuid())
   institution  String
   degree       String
   fieldOfStudy String?
-  startDate    String?  
-  endDate      String?  
+  startDate    String?
+  endDate      String?
   description  String?
-  order        Int      @default(0)
+  order        Int     @default(0)
 }
 
 model Project {
@@ -50,11 +50,11 @@ model Project {
   imageUrl    String?
   projectUrl  String?
   githubUrl   String?
-  content     String?
   tags        String[]
   order       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  content     String?
 }
 
 model Internship {
@@ -64,11 +64,11 @@ model Internship {
   startDate   String
   endDate     String
   description String
-  imageUrl    String?
-  content     String?
   order       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  content     String?
+  imageUrl    String?
 }
 
 model VisitorLog {

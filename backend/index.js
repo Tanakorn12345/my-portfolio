@@ -237,7 +237,6 @@ app.post('/api/visitors', async (req, res) => {
     const visitor = await prisma.visitorLog.create({
       data: {
         ipAddress: String(ipAddress),
-        userAgent: userAgentString,
         browser,
         device,
         os
