@@ -1,16 +1,13 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Kanit } from "next/font/google";
 import "./globals.css";
 // 1. นำเข้า LanguageProvider
 import { LanguageProvider } from "@/app/context/LanguageContext"; 
+import VisitorTracker from "@/app/components/VisitorTracker";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const kanit = Kanit({
+  variable: "--font-kanit",
+  subsets: ["latin", "thai"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata = {
@@ -20,10 +17,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <html lang="th">
+      <body className={`${kanit.variable} font-sans antialiased`}>
         {/* 2. ครอบ children ด้วย Provider */}
         <LanguageProvider>
+          <VisitorTracker />
           {children}
         </LanguageProvider>
       </body>

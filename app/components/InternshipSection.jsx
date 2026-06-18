@@ -1,8 +1,9 @@
 import React from 'react';
 import Image from 'next/image'; // เพิ่ม import Image
+import Link from 'next/link';
 
 // เพิ่ม logoSrc เข้ามาใน props
-const InternshipSection = ({ role, company, duration, responsibilities, techStack, logoSrc }) => {
+const InternshipSection = ({ id, role, company, duration, responsibilities, techStack, logoSrc }) => {
   return (
     <div className="w-full bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 hover:shadow-md transition-shadow duration-300">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 border-b border-gray-100 dark:border-gray-700 pb-4">
@@ -48,6 +49,7 @@ const InternshipSection = ({ role, company, duration, responsibilities, techStac
           ))}
         </ul>
       </div>
+
 
       {techStack && techStack.length > 0 && (
         <div className="mt-6 pt-4">

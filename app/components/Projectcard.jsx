@@ -5,8 +5,8 @@ import Link from "next/link";
 //  1. นำเข้า useLanguage Hook
 import { useLanguage } from "@/app/context/LanguageContext";
 
-const ProjectCard = ({ title, imageSrc, description, link, buttonText, type, status }) => {
-    const isExternal = link.startsWith("http");
+const ProjectCard = ({ id, title, imageSrc, description, link, buttonText, type, status }) => {
+    const isExternal = link ? link.startsWith("http") : false;
     //  2. เรียกใช้ language เพื่อเช็คภาษาปัจจุบัน
     const { language } = useLanguage();
     
@@ -43,10 +43,10 @@ const ProjectCard = ({ title, imageSrc, description, link, buttonText, type, sta
           )}
         </div>
 
-        <p className="text-gray-700 mb-6 dark:text-gray-300">{description}</p>
+        <p className="text-gray-700 mb-6 dark:text-gray-300 line-clamp-3">{description}</p>
         
        <Link
-          href={link}
+          href={link || '#'}
           target={isExternal ? "_blank" : "_self"} 
           className="flex items-center gap-2 px-6 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-colors w-fit justify-center dark:bg-gray-700 dark:hover:bg-gray-600"
         >

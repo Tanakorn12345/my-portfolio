@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Admin {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}
+
+model Profile {
+  id        String   @id @default(uuid())
+  name      String
+  title     String
+  bio       String?
+  email     String?
+  github    String?
+  linkedin  String?
+  resumeUrl String?
+  updatedAt DateTime @updatedAt
+}
+
+model Skill {
+  id        String   @id @default(uuid())
+  name      String
+  category  String?  // e.g., "Frontend", "Backend", "Tools"
+  icon      String?  
+  order     Int      @default(0)
+}
+
+model Education {
+  id           String   @id @default(uuid())
+  institution  String
+  degree       String
+  fieldOfStudy String?
+  startDate    String?  
+  endDate      String?  
+  description  String?
+  order        Int      @default(0)
+}
+
+model Project {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  imageUrl    String?
+  projectUrl  String?
+  githubUrl   String?
+  content     String?
+  tags        String[]
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Internship {
+  id          String   @id @default(uuid())
+  company     String
+  role        String
+  startDate   String
+  endDate     String
+  description String
+  imageUrl    String?
+  content     String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model VisitorLog {
+  id        String   @id @default(uuid())
+  ipAddress String?
+  browser   String?
+  device    String?
+  os        String?
+  visitedAt DateTime @default(now())
+}
