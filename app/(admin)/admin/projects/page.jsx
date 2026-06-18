@@ -53,7 +53,7 @@ export default function ProjectsAdmin() {
 
   const fetchProjects = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/projects`)
+      const res = await fetch('/api/projects`)
       const data = await res.json()
       setProjects(data)
     } catch (error) {
@@ -74,7 +74,7 @@ export default function ProjectsAdmin() {
       if (imageFile) {
         const uploadData = new FormData();
         uploadData.append('image', imageFile);
-        const uploadRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/upload`, {
+        const uploadRes = await fetch('/api/upload`, {
           method: 'POST',
           body: uploadData
         });
@@ -88,8 +88,8 @@ export default function ProjectsAdmin() {
       const tagsArray = [formData.type, formData.status, ...customTagsArray]
       
       const url = editId 
-        ? `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/projects/${editId}` 
-        : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/projects`
+        ? '/api/projects/${editId}` 
+        : '/api/projects`
       const method = editId ? 'PUT' : 'POST'
 
       await fetch(url, {
@@ -117,10 +117,10 @@ export default function ProjectsAdmin() {
   const handleSaveContent = async (projectId, newContentString) => {
     try {
       // First fetch the existing project to keep other fields intact
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/projects/${projectId}`)
+      const res = await fetch('/api/projects/${projectId}`)
       const project = await res.json()
       
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/projects/${projectId}`, {
+      await fetch('/api/projects/${projectId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -141,7 +141,7 @@ export default function ProjectsAdmin() {
   const handleDelete = async (id) => {
     if (confirm('คุณต้องการลบโปรเจ็กต์นี้ใช่หรือไม่?')) {
       try {
-        await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/projects/${id}`, {
+        await fetch('/api/projects/${id}`, {
           method: 'DELETE'
         })
         fetchProjects()

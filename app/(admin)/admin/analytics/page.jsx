@@ -15,7 +15,7 @@ export default function AnalyticsAdmin() {
 
   const fetchVisitors = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/visitors`)
+      const res = await fetch('/api/visitors`)
       const data = await res.json()
       setVisitors(data)
     } catch (error) {

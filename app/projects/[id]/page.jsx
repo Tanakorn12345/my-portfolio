@@ -30,7 +30,7 @@ export default function ProjectDetail() {
 
   const fetchProject = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/projects/${id}`)
+      const res = await fetch('/api/projects/${id}`)
       if (!res.ok) {
         router.push('/')
         return
@@ -72,7 +72,7 @@ export default function ProjectDetail() {
       if (imageFile) {
         const uploadData = new FormData();
         uploadData.append('image', imageFile);
-        const uploadRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/upload`, {
+        const uploadRes = await fetch('/api/upload`, {
           method: 'POST',
           body: uploadData
         });
@@ -84,7 +84,7 @@ export default function ProjectDetail() {
 
       const tagsArray = formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/projects/${id}`, {
+      const res = await fetch('/api/projects/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

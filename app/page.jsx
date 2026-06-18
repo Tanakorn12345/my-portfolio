@@ -29,9 +29,9 @@ export default function Home() {
     const fetchData = async () => {
       try {
         const [projRes, intRes, profRes] = await Promise.all([
-          fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/projects`),
-          fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/internships`),
-          fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/profile`)
+          fetch('/api/projects`),
+          fetch('/api/internships`),
+          fetch('/api/profile`)
         ]);
         
         if (projRes.ok) {
