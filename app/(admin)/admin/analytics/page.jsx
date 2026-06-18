@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { FaMobileAlt, FaDesktop, FaTabletAlt, FaGlobe, FaClock, FaApple, FaWindows, FaAndroid } from 'react-icons/fa'
+import { FaMobileAlt, FaDesktop, FaTabletAlt, FaGlobe, FaClock, FaApple, FaWindows, FaAndroid, FaTrash } from 'react-icons/fa'
 import { useLanguage } from '@/app/context/LanguageContext'
 
 export default function AnalyticsAdmin() {
@@ -20,6 +20,22 @@ export default function AnalyticsAdmin() {
       setVisitors(data)
     } catch (error) {
       console.error('Error fetching visitors:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleClearLogs = async () => {
+    if (!window.confirm(language === 'th' ? 'คุณแน่ใจหรือไม่ว่าต้องการลบประวัติการเข้าชมทั้งหมด?' : 'Are you sure you want to clear all visitor logs?')) return
+    
+    try {
+      setLoading(true)
+      const res = await fetch(`/api/visitors`, { method: 'DELETE' })
+      if (res.ok) {
+        setVisitors([])
+      }
+    } catch (error) {
+      console.error('Error clearing visitors:', error)
     } finally {
       setLoading(false)
     }
@@ -51,9 +67,19 @@ export default function AnalyticsAdmin() {
             {language === 'th' ? 'ดูข้อมูลผู้เข้าชมเว็บไซต์ล่าสุด รุ่นมือถือ และเบราว์เซอร์' : 'View latest website visitors, device models, and browsers'}
           </p>
         </div>
-        <div className="bg-white dark:bg-zinc-800 px-6 py-3 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-700">
-          <p className="text-sm text-gray-500 dark:text-gray-400">เข้าชมทั้งหมด</p>
-          <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{visitors.length} ครั้ง</p>
+        <div className="flex items-center gap-4">
+          <div className="bg-white dark:bg-zinc-800 px-6 py-3 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-700">
+            <p className="text-sm text-gray-500 dark:text-gray-400">{language === 'th' ? 'เข้าชมทั้งหมด' : 'Total Visits'}</p>
+            <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{visitors.length} {language === 'th' ? 'ครั้ง' : 'views'}</p>
+          </div>
+          <button
+            onClick={handleClearLogs}
+            disabled={loading || visitors.length === 0}
+            className="flex items-center gap-2 bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-900/20 dark:hover:bg-red-900/40 dark:text-red-400 px-4 py-3 rounded-xl shadow-sm border border-red-100 dark:border-red-900/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <FaTrash />
+            <span className="font-medium">{language === 'th' ? 'ล้างประวัติ' : 'Clear Logs'}</span>
+          </button>
         </div>
       </div>
 

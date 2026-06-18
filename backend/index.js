@@ -261,6 +261,28 @@ app.get('/api/visitors', async (req, res) => {
   }
 });
 
+// Clear Visitor Logs (Admin)
+app.delete('/api/visitors', async (req, res) => {
+  try {
+    await prisma.visitorLog.deleteMany({});
+    res.json({ message: 'All visitor logs have been cleared.' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Delete specific visitor log (Optional, but good to have)
+app.delete('/api/visitors/:id', async (req, res) => {
+  try {
+    await prisma.visitorLog.delete({
+      where: { id: req.params.id }
+    });
+    res.json({ message: 'Visitor log deleted.' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
