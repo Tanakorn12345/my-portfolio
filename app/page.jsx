@@ -199,19 +199,29 @@ export default function Home() {
           
 
           {/* วนลูปเรียกใช้ ProjectCard */}
-          {projects.map((project) => (
-            <ProjectCard
-              key={project.id}
-              id={project.id}
-              title={project.title}
-              imageSrc={project.imageUrl || project.image}
-              description={project.description}
-              link={project.projectUrl || project.githubUrl || '#'}          
-              buttonText={project.githubUrl ? "View on GitHub" : (project.projectUrl ? (language === 'th' ? "ดูรายละเอียด" : "View Details") : (language === 'th' ? "ดูเพิ่มเติม" : "Do more"))}
-              type={project.tags?.[0] || 'website'}
-              status={project.tags?.[1] || 'success'}
-            />
-          ))}
+          {projects.map((project) => {
+            const hasInternalContent = project.content && project.content.trim() !== '';
+            const defaultLink = hasInternalContent ? `/projects/${project.id}` : (project.projectUrl || project.githubUrl || '#');
+            const defaultButtonText = hasInternalContent 
+              ? (language === 'th' ? "อ่านรายละเอียด" : "Read Details")
+              : (project.githubUrl 
+                  ? "View on GitHub" 
+                  : (project.projectUrl ? (language === 'th' ? "ดูรายละเอียด" : "View Details") : (language === 'th' ? "ดูเพิ่มเติม" : "View More")));
+
+            return (
+              <ProjectCard
+                key={project.id}
+                id={project.id}
+                title={project.title}
+                imageSrc={project.imageUrl || project.image}
+                description={project.description}
+                link={defaultLink}
+                buttonText={defaultButtonText}
+                type={hasInternalContent ? 'internal' : (project.tags?.[0] || 'website')}
+                status={project.tags?.[1] || 'success'}
+              />
+            );
+          })}
         </div>
       </section>
 
