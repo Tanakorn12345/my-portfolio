@@ -4,9 +4,10 @@ import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { FaGithub, FaGlobe, FaArrowLeft, FaEdit, FaSave, FaTimes } from 'react-icons/fa'
+import { FaGithub, FaGlobe, FaArrowLeft, FaEdit, FaSave, FaTimes, FaFigma } from 'react-icons/fa'
 import { useLanguage } from '@/app/context/LanguageContext'
 import { createClient } from '@/utils/supabase/client'
+import DetailLayout from '@/app/components/DetailLayout'
 
 export default function ProjectDetail() {
   const { id } = useParams()
@@ -273,6 +274,51 @@ export default function ProjectDetail() {
                 )}
               </div>
             )}
+
+            {/* SECTIONS FROM PROJECT.CONTENT */}
+            {!isEditing && project.content && (() => {
+              try {
+                const projectData = JSON.parse(project.content);
+                if (projectData && projectData.length > 0) {
+                  return (
+                    <div className="mt-16 space-y-16">
+                      {projectData.map((section, index) => (
+                        <DetailLayout
+                          key={section.id || index}
+                          title={language === 'th' && section.titleTh ? section.titleTh : section.title}
+                          subtitle={language === 'th' ? section.subtitle : section.subtitleEn}
+                          imageSrc={section.imageSrc}
+                          imageAlt={section.title}
+                        >
+                          <h3 className="text-2xl font-semibold text-blue-500 border-b pb-2 dark:text-blue-400 dark:border-zinc-800">
+                            {language === 'th' ? section.contentTitle : section.contentTitleEn}
+                          </h3>
+                          <p className="mb-6 text-gray-700 dark:text-gray-300">
+                            {language === 'th' ? section.description : section.descriptionEn}
+                          </p>
+                          {section.figmaLink && (
+                            <div className="flex">
+                              <a
+                                href={section.figmaLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2 px-4 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors shadow-md dark:bg-white dark:text-black dark:hover:bg-gray-200"
+                              >
+                                <FaFigma className="text-xl" />
+                                <span>View in Figma</span>
+                              </a>
+                            </div>
+                          )}
+                        </DetailLayout>
+                      ))}
+                    </div>
+                  );
+                }
+              } catch (e) {
+                console.error("Error parsing project.content", e);
+              }
+              return null;
+            })()}
 
           </div>
         </div>
