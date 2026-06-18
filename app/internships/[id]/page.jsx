@@ -16,7 +16,7 @@ export default function InternshipDetail() {
   useEffect(() => {
     const fetchInternship = async () => {
       try {
-        const res = await fetch(`http://localhost:5001/api/internships/${id}`)
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/internships/${id}`)
         if (!res.ok) {
           router.push('/')
           return

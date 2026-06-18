@@ -13,7 +13,7 @@ export default function ProfileAdmin() {
 
   const fetchProfile = async () => {
     try {
-      const res = await fetch('http://localhost:5001/api/profile')
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/profile`)
       const data = await res.json()
       if (data.id) {
         setProfile(data)
@@ -38,8 +38,8 @@ export default function ProfileAdmin() {
     e.preventDefault()
     try {
       const url = profile?.id 
-        ? `http://localhost:5001/api/profile/${profile.id}` 
-        : 'http://localhost:5001/api/profile'
+        ? `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/profile/${profile.id}` 
+        : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/profile`
       const method = profile?.id ? 'PUT' : 'POST'
 
       await fetch(url, {

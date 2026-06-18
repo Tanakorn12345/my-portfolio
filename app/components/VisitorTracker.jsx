@@ -13,7 +13,7 @@ export default function VisitorTracker() {
 
     const trackVisit = async () => {
       try {
-        await fetch('http://localhost:5001/api/visitors', {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}/api/visitors`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
