@@ -1,13 +1,15 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { FaMobileAlt, FaDesktop, FaTabletAlt, FaGlobe, FaClock, FaApple, FaWindows, FaAndroid, FaTrash } from 'react-icons/fa'
+import { FaMobileAlt, FaDesktop, FaTabletAlt, FaGlobe, FaClock, FaApple, FaWindows, FaAndroid, FaTrash, FaMapMarkerAlt, FaNetworkWired } from 'react-icons/fa'
 import { useLanguage } from '@/app/context/LanguageContext'
 
 export default function AnalyticsAdmin() {
   const [visitors, setVisitors] = useState([])
   const [loading, setLoading] = useState(true)
   const { language } = useLanguage()
+
+  const [ipInfo, setIpInfo] = useState({})
 
   useEffect(() => {
     fetchVisitors()
@@ -18,6 +20,20 @@ export default function AnalyticsAdmin() {
       const res = await fetch(`/api/visitors`)
       const data = await res.json()
       setVisitors(data)
+
+      // Fetch IP info
+      const uniqueIps = [...new Set(data.map(v => v.ipAddress).filter(ip => ip))]
+      if (uniqueIps.length > 0) {
+        const ipRes = await fetch('/api/ip-info', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ips: uniqueIps })
+        })
+        if (ipRes.ok) {
+          const ipData = await ipRes.json()
+          setIpInfo(ipData)
+        }
+      }
     } catch (error) {
       console.error('Error fetching visitors:', error)
     } finally {
@@ -92,19 +108,21 @@ export default function AnalyticsAdmin() {
                 <th className="px-6 py-4 font-semibold">อุปกรณ์ (Device)</th>
                 <th className="px-6 py-4 font-semibold">ระบบปฏิบัติการ (OS)</th>
                 <th className="px-6 py-4 font-semibold">เบราว์เซอร์</th>
+                <th className="px-6 py-4 font-semibold">สถานที่ (Location)</th>
+                <th className="px-6 py-4 font-semibold">เครือข่าย (ISP)</th>
                 <th className="px-6 py-4 font-semibold">IP Address</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-zinc-800/50">
               {loading ? (
                 <tr>
-                  <td colSpan="5" className="px-6 py-10 text-center text-gray-500">
+                  <td colSpan="7" className="px-6 py-10 text-center text-gray-500">
                     กำลังโหลดข้อมูล...
                   </td>
                 </tr>
               ) : visitors.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="px-6 py-10 text-center text-gray-500">
+                  <td colSpan="7" className="px-6 py-10 text-center text-gray-500">
                     ยังไม่มีข้อมูลผู้เข้าชม
                   </td>
                 </tr>
@@ -131,6 +149,18 @@ export default function AnalyticsAdmin() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
                       {visitor.browser || 'Unknown'}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
+                      <div className="flex items-center gap-2">
+                        <FaMapMarkerAlt className="text-red-400" />
+                        {ipInfo[visitor.ipAddress]?.location || 'กำลังค้นหา...'}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
+                      <div className="flex items-center gap-2">
+                        <FaNetworkWired className="text-blue-400" />
+                        {ipInfo[visitor.ipAddress]?.isp || '-'}
+                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-500 font-mono text-xs">
                       {visitor.ipAddress || 'N/A'}
