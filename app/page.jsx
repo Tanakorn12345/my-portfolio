@@ -199,30 +199,6 @@ export default function Home() {
           
 
           {/* วนลูปเรียกใช้ ProjectCard */}
-<<<<<<< Updated upstream
-          {projects.map((project) => {
-            const hasInternalContent = project.content && project.content.trim() !== '';
-            const defaultLink = hasInternalContent ? `/projects/${project.id}` : (project.projectUrl || project.githubUrl || '#');
-            const defaultButtonText = hasInternalContent 
-              ? (language === 'th' ? "อ่านรายละเอียด" : "Read Details")
-              : (project.githubUrl 
-                  ? "View on GitHub" 
-                  : (project.projectUrl ? (language === 'th' ? "ดูรายละเอียด" : "View Details") : (language === 'th' ? "ดูเพิ่มเติม" : "View More")));
-=======
-<<<<<<< Updated upstream
-          {projects.map((project) => (
-            <ProjectCard
-              key={project.id}
-              title={project.title}
-              imageSrc={project.image}
-              description={project.description}
-              link={project.link}          
-              buttonText={project.buttonText}
-              type={project.type}
-              status={project.status}
-            />
-          ))}
-=======
           {projects.map((project) => {
             const type = project.tags?.[0] || 'website';
             
@@ -241,7 +217,6 @@ export default function Home() {
               defaultLink = project.projectUrl || project.githubUrl || '#';
               defaultButtonText = language === 'th' ? "เยี่ยมชมเว็บไซต์" : "Visit Website";
             }
->>>>>>> Stashed changes
 
             return (
               <ProjectCard
@@ -252,19 +227,11 @@ export default function Home() {
                 description={project.description}
                 link={defaultLink}
                 buttonText={defaultButtonText}
-<<<<<<< Updated upstream
-                type={hasInternalContent ? 'internal' : (project.tags?.[0] || 'website')}
-=======
                 type={targetType}
->>>>>>> Stashed changes
                 status={project.tags?.[1] || 'success'}
               />
             );
           })}
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
->>>>>>> Stashed changes
         </div>
       </section>
 
