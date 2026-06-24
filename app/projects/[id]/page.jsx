@@ -8,6 +8,7 @@ import { FaGithub, FaGlobe, FaArrowLeft, FaEdit, FaSave, FaTimes, FaFigma } from
 import { useLanguage } from '@/app/context/LanguageContext'
 import { createClient } from '@/utils/supabase/client'
 import DetailLayout from '@/app/components/DetailLayout'
+import Navbar from '@/app/components/Navbar'
 
 export default function ProjectDetail() {
   const { id } = useParams()
@@ -120,7 +121,9 @@ export default function ProjectDetail() {
   if (!project) return null
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 pt-24 pb-16 px-6 md:px-12 lg:px-20">
+    <>
+      <Navbar />
+      <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 pt-12 pb-16 px-6 md:px-12 lg:px-20">
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <button 
@@ -186,13 +189,15 @@ export default function ProjectDetail() {
             </div>
           ) : (
             project.imageUrl && (
-              <div className="relative w-full h-64 md:h-96">
-                <Image 
-                  src={project.imageUrl} 
-                  alt={project.title} 
-                  fill 
-                  className="object-cover"
-                />
+              <div className="w-full p-6 md:p-8 pb-0">
+                <div className="relative w-full aspect-video md:aspect-[21/9] rounded-xl overflow-hidden shadow-md">
+                  <Image 
+                    src={project.imageUrl} 
+                    alt={project.title} 
+                    fill 
+                    className="object-cover transition-transform duration-700 hover:scale-105"
+                  />
+                </div>
               </div>
             )
           )}
@@ -325,5 +330,6 @@ export default function ProjectDetail() {
         </div>
       </div>
     </div>
+    </>
   )
 }
