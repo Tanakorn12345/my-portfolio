@@ -39,31 +39,33 @@ function Page() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 transition-colors duration-300">
       <Navbar />
+      <div className="pt-24 pb-16 space-y-24 md:space-y-32">
       {projectData && projectData.length > 0 ? (
         projectData.map((section, index) => (
           <DetailLayout
             key={section.id || index}
+            index={index}
             title={language === 'th' && section.titleTh ? section.titleTh : section.title}
             subtitle={language === 'th' ? section.subtitle : section.subtitleEn}
             imageSrc={section.imageSrc}
             imageAlt={section.title}
           >
-            <h3 className="text-2xl font-semibold text-blue-500 border-b pb-2 dark:text-blue-400 dark:border-zinc-800">
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
               {language === 'th' ? section.contentTitle : section.contentTitleEn}
             </h3>
-            <p className="mb-6 text-gray-700 dark:text-gray-300">
+            <p className="mb-8 text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
               {language === 'th' ? section.description : section.descriptionEn}
             </p>
             {section.figmaLink && (
-              <div className="flex">
+              <div className="flex mt-8">
                 <a
                   href={section.figmaLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors shadow-md dark:bg-white dark:text-black dark:hover:bg-gray-200"
+                  className="group flex items-center gap-3 px-8 py-4 bg-[#F24E1E] hover:bg-[#E03E0E] text-white rounded-2xl transition-all shadow-xl shadow-[#F24E1E]/30 hover:shadow-[#F24E1E]/50 hover:-translate-y-1"
                 >
-                  <FaFigma className="text-xl" />
-                  <span>View in Figma</span>
+                  <FaFigma className="text-xl group-hover:scale-110 transition-transform" />
+                  <span className="font-bold tracking-wide">View in Figma</span>
                 </a>
               </div>
             )}
@@ -74,6 +76,7 @@ function Page() {
           <p>ไม่มีเนื้อหาสำหรับโปรเจ็กต์นี้ (No content available)</p>
         </div>
       )}
+      </div>
     </div>
   );
 }
