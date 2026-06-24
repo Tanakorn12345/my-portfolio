@@ -17,16 +17,17 @@ const DetailLayout = ({
       <div className={`flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} gap-8 md:gap-12 lg:gap-16 items-center`}>
         
         {/* ส่วนรูปภาพ (Image) */}
-        <div className="w-full md:w-1/2 relative group">
+        <div className="w-full md:w-5/12 lg:w-2/5 relative group shrink-0">
           {/* กรอบพื้นหลังที่ลอยเหลื่อมออกมาเพื่อเพิ่มมิติ (Decorative background) */}
           <div className={`absolute -inset-4 md:-inset-6 rounded-3xl opacity-30 group-hover:opacity-50 transition-opacity duration-500 blur-xl ${isEven ? 'bg-gradient-to-br from-blue-400 to-indigo-500' : 'bg-gradient-to-bl from-purple-400 to-pink-500'}`}></div>
           
-          <div className="relative w-full aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border border-white/20 dark:border-zinc-800/50 bg-gray-100 dark:bg-zinc-900 transform transition-transform duration-700 hover:scale-[1.02]">
+          <div className="relative w-full aspect-video md:aspect-[4/3] lg:aspect-video rounded-3xl overflow-hidden shadow-2xl border border-white/20 dark:border-zinc-800/50 bg-gray-100 dark:bg-zinc-900 transform transition-transform duration-700 hover:scale-[1.02]">
             {imageSrc ? (
               <Image
                 src={imageSrc}
                 alt={imageAlt || title || 'Project detail image'}
                 fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 40vw"
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
             ) : (
@@ -41,7 +42,7 @@ const DetailLayout = ({
         </div>
 
         {/* ส่วนข้อความ (Content / Text) */}
-        <div className={`w-full md:w-1/2 flex flex-col justify-center ${isEven ? 'md:pl-6 lg:pl-10' : 'md:pr-6 lg:pr-10'}`}>
+        <div className={`w-full md:w-7/12 lg:w-3/5 flex flex-col justify-center ${isEven ? 'md:pl-6 lg:pl-10' : 'md:pr-6 lg:pr-10'}`}>
           <div className="relative">
             {/* เส้นตกแต่ง */}
             <div className={`absolute -left-6 top-2 bottom-2 w-1.5 rounded-full hidden md:block opacity-80 ${isEven ? 'bg-gradient-to-b from-blue-500 to-indigo-500' : 'bg-gradient-to-b from-purple-500 to-pink-500'}`}></div>
@@ -52,7 +53,7 @@ const DetailLayout = ({
                   {subtitle}
                 </span>
               )}
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-white leading-tight tracking-tight mb-2">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-white leading-tight tracking-tight mb-4">
                 {title}
               </h2>
             </div>
