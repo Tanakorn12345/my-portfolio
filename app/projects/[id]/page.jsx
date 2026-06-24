@@ -120,7 +120,7 @@ export default function ProjectDetail() {
   if (!project) return null
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 py-20 px-6">
+    <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 pt-32 pb-20 px-6">
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <button 
@@ -251,25 +251,25 @@ export default function ProjectDetail() {
                 </div>
               </div>
             ) : (
-              <div className="flex flex-wrap gap-4 mb-12">
+              <div className="flex flex-wrap gap-4 mb-16 border-b border-gray-100 dark:border-zinc-800 pb-12">
                 {project.projectUrl && (
                   <Link
                     href={project.projectUrl}
                     target="_blank"
-                    className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    className="group flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl hover:from-blue-700 hover:to-indigo-700 transition-all shadow-xl shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-1"
                   >
-                    <FaGlobe />
-                    {language === 'th' ? 'เยี่ยมชมเว็บไซต์' : 'Visit Website'}
+                    <FaGlobe className="text-xl group-hover:rotate-12 transition-transform" />
+                    <span className="font-bold">{language === 'th' ? 'เยี่ยมชมเว็บไซต์' : 'Visit Website'}</span>
                   </Link>
                 )}
                 {project.githubUrl && (
                   <Link
                     href={project.githubUrl}
                     target="_blank"
-                    className="flex items-center gap-2 px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-colors dark:bg-gray-700 dark:hover:bg-gray-600"
+                    className="group flex items-center gap-3 px-8 py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-2xl hover:bg-black dark:hover:bg-gray-100 transition-all shadow-xl shadow-gray-900/20 dark:shadow-white/20 hover:shadow-gray-900/40 hover:-translate-y-1"
                   >
-                    <FaGithub />
-                    GitHub
+                    <FaGithub className="text-xl group-hover:scale-110 transition-transform" />
+                    <span className="font-bold">GitHub Repository</span>
                   </Link>
                 )}
               </div>
@@ -281,31 +281,32 @@ export default function ProjectDetail() {
                 const projectData = JSON.parse(project.content);
                 if (projectData && projectData.length > 0) {
                   return (
-                    <div className="mt-16 space-y-16">
+                    <div className="mt-8 space-y-24 md:space-y-32">
                       {projectData.map((section, index) => (
                         <DetailLayout
                           key={section.id || index}
+                          index={index}
                           title={language === 'th' && section.titleTh ? section.titleTh : section.title}
                           subtitle={language === 'th' ? section.subtitle : section.subtitleEn}
                           imageSrc={section.imageSrc}
                           imageAlt={section.title}
                         >
-                          <h3 className="text-2xl font-semibold text-blue-500 border-b pb-2 dark:text-blue-400 dark:border-zinc-800">
+                          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
                             {language === 'th' ? section.contentTitle : section.contentTitleEn}
                           </h3>
-                          <p className="mb-6 text-gray-700 dark:text-gray-300">
+                          <p className="mb-8 text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
                             {language === 'th' ? section.description : section.descriptionEn}
                           </p>
                           {section.figmaLink && (
-                            <div className="flex">
+                            <div className="flex mt-8">
                               <a
                                 href={section.figmaLink}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center gap-2 px-4 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors shadow-md dark:bg-white dark:text-black dark:hover:bg-gray-200"
+                                className="group flex items-center gap-3 px-8 py-4 bg-[#F24E1E] hover:bg-[#E03E0E] text-white rounded-2xl transition-all shadow-xl shadow-[#F24E1E]/30 hover:shadow-[#F24E1E]/50 hover:-translate-y-1"
                               >
-                                <FaFigma className="text-xl" />
-                                <span>View in Figma</span>
+                                <FaFigma className="text-xl group-hover:scale-110 transition-transform" />
+                                <span className="font-bold tracking-wide">View in Figma</span>
                               </a>
                             </div>
                           )}
