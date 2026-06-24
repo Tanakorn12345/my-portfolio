@@ -45,17 +45,8 @@ const ProjectCard = ({ id, title, imageSrc, description, link, buttonText, type,
 
         <p className="text-gray-700 mb-6 dark:text-gray-300 line-clamp-3">{description}</p>
         
-<<<<<<< Updated upstream
-       <Link
-<<<<<<< Updated upstream
-          href={link || '#'}
-=======
-          href={link}
-=======
         <Link
           href={link || '#'}
->>>>>>> Stashed changes
->>>>>>> Stashed changes
           target={isExternal ? "_blank" : "_self"} 
           className={`flex items-center gap-2 px-6 py-2.5 text-white rounded-xl transition-all shadow-md hover:shadow-lg w-fit justify-center font-medium ${
             type === 'github' 
