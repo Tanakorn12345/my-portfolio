@@ -1,0 +1,207 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import { FaMobileAlt, FaDesktop, FaTabletAlt, FaGlobe, FaClock, FaApple, FaWindows, FaAndroid, FaTrash, FaMapMarkerAlt, FaNetworkWired, FaFileDownload } from 'react-icons/fa'
+import { useLanguage } from '@/app/context/LanguageContext'
+
+export default function AnalyticsAdmin() {
+  const [visitors, setVisitors] = useState([])
+  const [loading, setLoading] = useState(true)
+  const { language } = useLanguage()
+
+  const [ipInfo, setIpInfo] = useState({})
+
+  useEffect(() => {
+    fetchVisitors()
+  }, [])
+
+  const fetchVisitors = async () => {
+    try {
+      const res = await fetch(`/api/visitors`)
+      const data = await res.json()
+      setVisitors(data)
+
+      // Fetch IP info
+      const uniqueIps = [...new Set(data.map(v => v.ipAddress).filter(ip => ip))]
+      if (uniqueIps.length > 0) {
+        const ipRes = await fetch('/api/ip-info', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ips: uniqueIps })
+        })
+        if (ipRes.ok) {
+          const ipData = await ipRes.json()
+          setIpInfo(ipData)
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching visitors:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleClearLogs = async () => {
+    if (!window.confirm(language === 'th' ? 'คุณแน่ใจหรือไม่ว่าต้องการลบประวัติการเข้าชมทั้งหมด?' : 'Are you sure you want to clear all visitor logs?')) return
+    
+    try {
+      setLoading(true)
+      const res = await fetch(`/api/visitors`, { method: 'DELETE' })
+      if (res.ok) {
+        setVisitors([])
+      }
+    } catch (error) {
+      console.error('Error clearing visitors:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleExportJson = () => {
+    if (visitors.length === 0) {
+      alert(language === 'th' ? 'ไม่สามารถส่งออกได้เพราะไม่มีข้อมูล' : 'Cannot export because there is no data')
+      return
+    }
+
+    const exportData = visitors.map(v => ({
+      ...v,
+      locationInfo: ipInfo[v.ipAddress] || null
+    }))
+
+    const dataStr = JSON.stringify(exportData, null, 2)
+    const blob = new Blob([dataStr], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `visitors_log_${new Date().toISOString().split('T')[0]}.json`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  }
+
+  const getDeviceIcon = (deviceStr) => {
+    const d = (deviceStr || '').toLowerCase()
+    if (d.includes('mobile') || d.includes('phone') || d.includes('iphone')) return <FaMobileAlt className="text-blue-500" />
+    if (d.includes('tablet') || d.includes('ipad')) return <FaTabletAlt className="text-purple-500" />
+    return <FaDesktop className="text-gray-500" />
+  }
+
+  const getOsIcon = (osStr) => {
+    const o = (osStr || '').toLowerCase()
+    if (o.includes('ios') || o.includes('mac')) return <FaApple className="text-gray-800 dark:text-gray-200" />
+    if (o.includes('windows')) return <FaWindows className="text-blue-600" />
+    if (o.includes('android')) return <FaAndroid className="text-green-500" />
+    return <FaGlobe className="text-gray-400" />
+  }
+
+  return (
+    <div className="max-w-6xl mx-auto pb-12">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+            {language === 'th' ? 'สถิติผู้เข้าชม' : 'Visitor Analytics'}
+          </h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-2">
+            {language === 'th' ? 'ดูข้อมูลผู้เข้าชมเว็บไซต์ล่าสุด รุ่นมือถือ และเบราว์เซอร์' : 'View latest website visitors, device models, and browsers'}
+          </p>
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="bg-white dark:bg-zinc-800 px-6 py-3 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-700">
+            <p className="text-sm text-gray-500 dark:text-gray-400">{language === 'th' ? 'เข้าชมทั้งหมด' : 'Total Visits'}</p>
+            <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{visitors.length} {language === 'th' ? 'ครั้ง' : 'views'}</p>
+          </div>
+          <button
+            onClick={handleExportJson}
+            className="flex items-center gap-2 bg-green-50 hover:bg-green-100 text-green-600 dark:bg-green-900/20 dark:hover:bg-green-900/40 dark:text-green-400 px-4 py-3 rounded-xl shadow-sm border border-green-100 dark:border-green-900/30 transition-colors"
+          >
+            <FaFileDownload />
+            <span className="font-medium">{language === 'th' ? 'ส่งออก JSON' : 'Export JSON'}</span>
+          </button>
+          <button
+            onClick={handleClearLogs}
+            disabled={loading || visitors.length === 0}
+            className="flex items-center gap-2 bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-900/20 dark:hover:bg-red-900/40 dark:text-red-400 px-4 py-3 rounded-xl shadow-sm border border-red-100 dark:border-red-900/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <FaTrash />
+            <span className="font-medium">{language === 'th' ? 'ล้างประวัติ' : 'Clear Logs'}</span>
+          </button>
+        </div>
+      </div>
+
+      <div className="bg-white dark:bg-zinc-900/80 rounded-2xl shadow-sm border border-gray-100 dark:border-zinc-800/50 overflow-hidden backdrop-blur-xl">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-gray-50 dark:bg-zinc-800/50 text-gray-600 dark:text-gray-300 text-sm border-b border-gray-100 dark:border-zinc-700">
+                <th className="px-6 py-4 font-semibold">เวลาเข้าชม</th>
+                <th className="px-6 py-4 font-semibold">อุปกรณ์ (Device)</th>
+                <th className="px-6 py-4 font-semibold">ระบบปฏิบัติการ (OS)</th>
+                <th className="px-6 py-4 font-semibold">เบราว์เซอร์</th>
+                <th className="px-6 py-4 font-semibold">สถานที่ (Location)</th>
+                <th className="px-6 py-4 font-semibold">เครือข่าย (ISP)</th>
+                <th className="px-6 py-4 font-semibold">IP Address</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100 dark:divide-zinc-800/50">
+              {loading ? (
+                <tr>
+                  <td colSpan="7" className="px-6 py-10 text-center text-gray-500">
+                    กำลังโหลดข้อมูล...
+                  </td>
+                </tr>
+              ) : visitors.length === 0 ? (
+                <tr>
+                  <td colSpan="7" className="px-6 py-10 text-center text-gray-500">
+                    ยังไม่มีข้อมูลผู้เข้าชม
+                  </td>
+                </tr>
+              ) : (
+                visitors.map((visitor) => (
+                  <tr key={visitor.id} className="hover:bg-gray-50 dark:hover:bg-zinc-800/50 transition-colors">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
+                      <div className="flex items-center gap-2">
+                        <FaClock className="text-gray-400" />
+                        {new Date(visitor.visitedAt).toLocaleString('th-TH')}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white font-medium">
+                      <div className="flex items-center gap-2">
+                        {getDeviceIcon(visitor.device)}
+                        {visitor.device || 'Unknown'}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
+                      <div className="flex items-center gap-2">
+                        {getOsIcon(visitor.os)}
+                        {visitor.os || 'Unknown'}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
+                      {visitor.browser || 'Unknown'}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
+                      <div className="flex items-center gap-2">
+                        <FaMapMarkerAlt className="text-red-400" />
+                        {ipInfo[visitor.ipAddress]?.location || 'กำลังค้นหา...'}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
+                      <div className="flex items-center gap-2">
+                        <FaNetworkWired className="text-blue-400" />
+                        {ipInfo[visitor.ipAddress]?.isp || '-'}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-500 font-mono text-xs">
+                      {visitor.ipAddress || 'N/A'}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  )
+}
