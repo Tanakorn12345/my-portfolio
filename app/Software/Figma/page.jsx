@@ -1,140 +1,82 @@
 "use client";
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from "@/app/components/Navbar";
 import DetailLayout from "@/app/components/DetailLayout";
 import { FaFigma } from "react-icons/fa";
-
-// 1. นำเข้า Hook
 import { useLanguage } from "@/app/context/LanguageContext";
 
 function Page() {
-  // 2. ดึงค่าภาษาปัจจุบัน
   const { language } = useLanguage();
+  const [projectData, setProjectData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProject = async () => {
+      try {
+        const res = await fetch(`/api/projects`);
+        const data = await res.json();
+        const project = data.find(p => p.projectUrl === '/Software/Figma');
+        if (project && project.content) {
+          setProjectData(JSON.parse(project.content));
+        }
+      } catch (error) {
+        console.error('Error fetching project content:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProject();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 flex items-center justify-center">
+        <p className="text-gray-500">Loading...</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 transition-colors duration-300">
       <Navbar />
-           
-      {/* =========================================================
-          SECTION 1: Home page
-         ========================================================= */}
-      <DetailLayout
-        title="Home page"
-        subtitle={language === 'th' ? "เป็นการออกแบบ Home page" : "Home page design"}
-        imageSrc="/figma/Screenshot 2568-12-06 at 19.47.15.png"
-        imageAlt="Homepage"
-      >
-        <h3 className="text-2xl font-semibold text-blue-500 border-b pb-2">
-          {language === 'th' ? "รายละเอียด Homepage" : "Homepage Details"}
-        </h3>
-        
-        <p>
-          {language === 'th'
-            ? "ในหน้านี้จะเป็นการออกแบบ Homepage จะเป็นการโชว์ห้องทั้งหมดที่มีอยู่ในระบบ และแถบแสดงผลด้านบนจะโชว์ว่าในการจัดการระบบจะมี เจ้าหน้าที่และผู้ดูแลมีฟิลเตอร์ในการกรองห้อง เช่น การเลือกตามเวลา"
-            : "This page designs the Homepage, displaying all available rooms in the system. The top bar indicates system management options for Staff and Admins, including filters for rooms, such as filtering by time."}
-        </p>
-      </DetailLayout>
-
-      {/* =========================================================
-          SECTION 2: Booking page
-         ========================================================= */}
-      <DetailLayout
-        title="Booking page"
-        subtitle={language === 'th' ? "เป็นการออกแบบ Booking page" : "Booking page design"}
-        imageSrc="/figma/Screenshot 2568-12-06 at 19.52.36.png"
-        imageAlt="Booking page"
-      >
-        <h3 className="text-2xl font-semibold text-blue-500 border-b pb-2">
-          {language === 'th' ? "รายละเอียด Booking page" : "Booking page Details"}
-        </h3>
-        
-        <p>
-          {language === 'th'
-            ? "ในหน้านี้จะเป็นการออกแบบ Booking page โดยเป็นหน้าสำหรับการเลือกโซนของห้องว่าจะเลือกใช้โซนไหนโดยแบ่งเป็นตามอาคารเช่น อาคาร ICT , อาคาร LIBRARY ก่อนที่จะทำการเลือกห้องในโซนนั้นต่อไป"
-            : "This page designs the Booking page. It serves as the interface for selecting a room zone, categorized by buildings such as the ICT Building or LIBRARY, before proceeding to select a specific room within that zone."}
-        </p>
-      </DetailLayout>
-
-      {/* =========================================================
-          SECTION 3: Zone page
-         ========================================================= */}
-      <DetailLayout
-        title="Zone page"
-        subtitle={language === 'th' ? "เป็นการออกแบบ Zone page" : "Zone page design"}
-        imageSrc="/figma/Screenshot 2568-12-06 at 20.01.50.png"
-        imageAlt="Zone page"
-      >
-        <h3 className="text-2xl font-semibold text-blue-500 border-b pb-2">
-          {language === 'th' ? "รายละเอียด Zone page" : "Zone page Details"}
-        </h3>
-        
-        <p>
-          {language === 'th'
-            ? "ในหน้านี้จะเป็นการออกแบบ Zone page ซึ่งพอมีการเลือกอาคารแล้วจะเข้ามาที่หน้านี้ทันทีเพื่อเลือกโซนในอาคารนั้น โดยจะมีการโชว์ห้องที่ยังว่างหรือที่กำลังใช้งานอยู่ด้วยโดยจะมีเวลาให้เลือกด้วยเช่นกัน"
-            : "This page designs the Zone page. Once a building is selected, users land here to choose a specific zone. It displays available or occupied rooms and includes time selection options."}
-        </p>
-      </DetailLayout>
-
-      {/* =========================================================
-          SECTION 4: Review page
-         ========================================================= */}
-      <DetailLayout
-        title="Review page"
-        subtitle={language === 'th' ? "เป็นการออกแบบ Review page" : "Review page design"}
-        imageSrc="/figma/Screenshot 2568-12-06 at 20.09.38.png"
-        imageAlt="Review page"
-      >
-        <h3 className="text-2xl font-semibold text-blue-500 border-b pb-2">
-          {language === 'th' ? "รายละเอียด Review page" : "Review page Details"}
-        </h3>
-        
-        <p className='mb-8'>
-          {language === 'th'
-            ? "ในหน้านี้จะเป็นการออกแบบ Review page สำหรับการใช้งานเสร็จแล้วระบบจะมีการให้ผู้ใช้รีวิวในการใช้ห้องเพื่อคำแนะนำในครั้งต่อไป โดยมีรายละเอียดทั้งชื่อผู้ใช้ ดาวการให้คะแนน และความคิดเห็นเพิ่มเติม และวันที่รีวิว"
-            : "This page designs the Review page. After using a room, the system allows users to leave a review for future reference. Details include username, star rating, additional comments, and the date of the review."}
-        </p>
-      </DetailLayout>
-
-      {/* =========================================================
-          SECTION 5: Staff dashboard page
-         ========================================================= */}
-      <DetailLayout
-        title="Staff dashboard page"
-        subtitle={language === 'th' ? "เป็นการออกแบบ Staff dashboard page" : "Staff dashboard page design"}
-        imageSrc="/figma/Screenshot 2568-12-06 at 20.14.26.png"
-        imageAlt="Staff dashboard page"
-      >
-        <h3 className="text-2xl font-semibold text-blue-500 border-b pb-2">
-          {language === 'th' ? "รายละเอียด Staff dashboard page" : "Staff dashboard page Details"}
-        </h3>
-        
-        <p>
-          {language === 'th'
-            ? "ในหน้านี้จะเป็นการออกแบบ Staff dashboard page สำหรับจัดการระบบจองห้องที่ฝั่ง ผู้ใช้งานทั่วไปได้ส่งคำขอมา จะแสดงคำขอทั้งหมดของผู้ใช้ในหน้านี้ และแสดงประวัติการจองห้องของระบบด้วย"
-            : "This page designs the Staff dashboard page for managing room booking requests sent by general users. It displays all user requests and the system's booking history."}
-        </p>
-      </DetailLayout>
-
-      {/* =========================================================
-          SECTION 6: Admin dashboard page
-         ========================================================= */}
-      <DetailLayout
-        title="Admin dashboard page"
-        subtitle={language === 'th' ? "เป็นการออกแบบ Admin dashboard page" : "Admin dashboard page design"}
-        imageSrc="/figma/Screenshot 2568-12-06 at 20.21.40.png"
-        imageAlt="Admin dashboard page"
-      >
-        <h3 className="text-2xl font-semibold text-blue-500 border-b pb-2">
-          {language === 'th' ? "รายละเอียด Admin dashboard page" : "Admin dashboard page Details"}
-        </h3>
-        
-        <p>
-          {language === 'th'
-            ? "ในหน้านี้จะเป็นการออกแบบ Admin dashboard page สำหรับการจัดการระบบทั้งหมดในบทบาทผู้ดูแลระบบ จะสามารถจัดการผู้ใช้ในระบบเป็นส่วนใหญ่เช่น การแก้ไขข้อมูลผู้ใช้ การเพิ่มผู้ใช้ การลบผู้ใช้"
-            : "This page designs the Admin dashboard page for overall system management by administrators. It allows managing system users, including editing user information, adding users, and deleting users."}
-        </p>
-      </DetailLayout>
-      
+      <div className="pt-24 pb-16 space-y-24 md:space-y-32">
+      {projectData && projectData.length > 0 ? (
+        projectData.map((section, index) => (
+          <DetailLayout
+            key={section.id || index}
+            index={index}
+            title={language === 'th' && section.titleTh ? section.titleTh : section.title}
+            subtitle={language === 'th' ? section.subtitle : section.subtitleEn}
+            imageSrc={section.imageSrc}
+            imageAlt={section.title}
+          >
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+              {language === 'th' ? section.contentTitle : section.contentTitleEn}
+            </h3>
+            <p className="mb-8 text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
+              {language === 'th' ? section.description : section.descriptionEn}
+            </p>
+            {section.figmaLink && (
+              <div className="flex mt-8">
+                <a
+                  href={section.figmaLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center gap-3 px-8 py-4 bg-[#F24E1E] hover:bg-[#E03E0E] text-white rounded-2xl transition-all shadow-xl shadow-[#F24E1E]/30 hover:shadow-[#F24E1E]/50 hover:-translate-y-1"
+                >
+                  <FaFigma className="text-xl group-hover:scale-110 transition-transform" />
+                  <span className="font-bold tracking-wide">View in Figma</span>
+                </a>
+              </div>
+            )}
+          </DetailLayout>
+        ))
+      ) : (
+        <div className="flex items-center justify-center min-h-[50vh] text-gray-500 dark:text-gray-400">
+          <p>ไม่มีเนื้อหาสำหรับโปรเจ็กต์นี้ (No content available)</p>
+        </div>
+      )}
+      </div>
     </div>
   );
 }

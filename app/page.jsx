@@ -7,6 +7,7 @@ import InternshipSection from '@/app/components/InternshipSection';
 
 // 1. นำเข้า Hook 
 import { useLanguage } from "@/app/context/LanguageContext";
+import { useState, useEffect } from "react";
 
 // Icons
 import { FaSchool, FaBookReader, FaGraduationCap, FaUniversity, FaCalendarAlt, FaLinkedin } from "react-icons/fa";
@@ -20,91 +21,37 @@ export default function Home() {
   // 2. เรียกใช้ Hook เพื่อดึงค่าภาษาปัจจุบัน
   const { language } = useLanguage();
 
-  // 3. ข้อมูล Projects
-  const projects = [
-    {
-      id: 1,
-      title: "LINE GIRL",
-      image: "/ภาพถ่ายหน้าจอ 2568-11-09 เวลา 20.17.49.png",
-      description: language === 'th' 
-        ? "โปรเจกต์นี้จะเกี่ยวข้องกับงานภายในคลาสเรียนของผมครับ คือ การออกแบบเว็บแอปพลิเคชัน ซึ่งมีต้นแบบเป็นธุรกิจ Line Man แต่เป็นการสั่งอาหารและรับที่สาขาเท่านั้น ซึ่งผมรับผิดชอบในส่วน front-end โดยการออกแบบให้สอดคล้องกับ UX/UI ของเว็บไซต์ในต้นแบบ และเชื่อมต่อกับ back-end เพื่อให้เว็บไซต์สามารถใช้งานได้จริง สิ่งที่พิเศษของโปรเจกต์นี้คือการจัดการระบบที่ง่ายและการจัดการผู้ใช้งานอย่างเป็นระบบ มีการแยกบทบาทในแอพที่ชัดเจน รวมถึงการใช้โมเดล Agile ในการทำงานของทีมพัฒนา ดูรายละเอียดเพิ่มเติมได้ที่ลิงก์ GitHub"
-        : "This project relates to my classwork involving web application design, modeled after Line Man but focusing on pick-up orders. I was responsible for the Front-end, ensuring UX/UI consistency with the prototype and connecting with the Back-end for functionality. Key features include easy system management, systematic user role separation, and Agile development methodology. See more details on GitHub.",
-      link: "https://github.com/Tanakorn12345/testweb",
-      buttonText: "View on GitHub",
-      type: "github",
-      status: "success"
-    },
-    {
-      id: 2,
-      title: "Software engineering (Booking room)",
-      image: "/Screenshot 2568-12-06 at 20.23.54.png",
-      description: language === 'th'
-        ? "โปรเจ็กต์นี้เกี่ยวกับงานภายในคลาสของผมครับ คือ การทำระบบการจัดการจองห้องประชุมและห้องเรียนภายในมหาวิทยาลัย เพื่อแก้ปัญหาการจองห้องที่ซับซ้อนและลดความผิดพลาดในการจัดการตารางเวลา โดยมีการใช้ Use Case Diagram และ Data Flow Diagram (DFD Level 0-2) เพื่อจำลองการไหลของข้อมูลและการทำงานของระบบ มีการจัดทำ Structure Chart เพื่อวางโครงสร้างโมดูลการทำงาน เช่น การจอง และยังมีการออกแบบระบบให้รองรับการทำงานผ่าน Web Application และมีการเชื่อมต่อฐานข้อมูล (เช่น Google Firebase)"
-        : "A university room booking management system project designed to solve complexity and scheduling errors. Utilizing Use Case Diagrams, DFDs (Level 0-2), and Structure Charts to model data flow and modules like booking. The system is designed as a Web Application integrated with Google Firebase.",
-      link: "/Software",
-      buttonText: language === 'th' ? "ดูเพิ่มเติม" : "Do more",
-      type: "website",
-      status: "success"
-    },
-    {
-      id: 3,
-      title: "Figma design in Software engineering",
-      image: "/Screenshot 2568-12-05 at 11.46.12.png",
-      description: language === 'th'
-        ? "โปรเจ็กต์นี้เกี่ยวกับงานภายในคลาสของผมครับ คือ การทำระบบการจัดการจองห้องประชุมและห้องเรียนภายในมหาวิทยาลัย ในส่วนของการออกแบบ Prototype ก่อนนำไป implememt จริง โดยมีการออกแบบให้ใช้ง่าย มีระบบที่ไม่ซับซ้อน สามารถจัดการได้ง่าย"
-        : "This project focuses on the UI/UX Prototype design for the university room booking system using Figma. The goal was to create a user-friendly, uncomplicated interface that is easy to manage before actual implementation.",
-      link: "/Software/Figma",
-      buttonText: language === 'th' ? "ดูเพิ่มเติม" : "Do more",
-      type: "website",
-      status: "success"
-    } ,
-    {
-      id: 4,
-      title: "Figma design in Line girl",
-      image: "/figma-linegirl/Screenshot 2568-12-16 at 13.45.58.png",
-      description: language === 'th'
-        ? "โปรเจ็กต์นี้เกี่ยวกับงานภายในคลาสของผมครับ คือ การออกแบบเว็บแอปพลิเคชัน ซึ่งมีต้นแบบเป็นธุรกิจ Line Man โดยในส่วนนี้คือการออกแบบ UX/UI ของเว็บก่อนนำไป implement ดีไซน์ที่ดูสบายตา ใช้งานง่าย ไม่ซับซ้อน พร้อมระบบจัดการหลังบ้านที่ชัดเจน เพื่อให้มั่นใจในประสิทธิภาพของ Flow การทำงานก่อนเริ่มเขียนโค้ดจริง"
-        : "This project is for my class: designing a web application based on the Line Man business model. This part involves designing the UX/UI of the website before implementation. The design focuses on a clean, user-friendly, and uncluttered interface, along with a clear backend management system to ensure efficient workflow before starting to write the actual code.",
-      link: "/linegirl/figma",
-      buttonText: language === 'th' ? "ดูเพิ่มเติม" : "Do more",
-      type: "website",
-      status: "success"
-    } ,
-    {
-      id: 5,
-      title: "Mobile application 'PetPoint' ",
-      image: "/figma-linegirl/Screenshot 2568-12-16 at 13.45.58.png",
-      description: language === 'th'
-        ? "โปรเจ็กต์นี้เกี่ยวกับงานภายในคลาสของผมครับ คือ การออกแบบเว็บแอปพลิเคชัน ซึ่งมีต้นแบบเป็นธุรกิจ Line Man โดยในส่วนนี้คือการออกแบบ UX/UI ของเว็บก่อนนำไป implement ดีไซน์ที่ดูสบายตา ใช้งานง่าย ไม่ซับซ้อน พร้อมระบบจัดการหลังบ้านที่ชัดเจน เพื่อให้มั่นใจในประสิทธิภาพของ Flow การทำงานก่อนเริ่มเขียนโค้ดจริง"
-        : "This project is for my class: designing a web application based on the Line Man business model. This part involves designing the UX/UI of the website before implementation. The design focuses on a clean, user-friendly, and uncluttered interface, along with a clear backend management system to ensure efficient workflow before starting to write the actual code.",
-      link: "",
-      buttonText: language === 'th' ? "ดูเพิ่มเติม" : "Do more",
-      type: "website",
-      status: "in-progress"
-    }
-  ];
+  const [projects, setProjects] = useState([]);
+  const [internships, setInternships] = useState([]);
+  const [profile, setProfile] = useState(null);
 
-  // 4. ข้อมูล Internship (กำหนดเป็น Object ตามที่คุณต้องการ)
-  const internships = [
-    {
-      id: 1,
-      role: "IT Support Intern", 
-      company: language === 'th' ? "บริษัท เอ็กซ์ซี จำกัด" : "Exzy Co., Ltd.",
-      duration: language === 'th' ? "20 พฤษภาคม 2569 - 31 กรกฎาคม 2569" : "20 May 2026 - 31 July 2026",
-      logoSrc: "/internship/logo exzy.jpg",
-      responsibilities: language === 'th' ? [
-        "พัฒนาระบบและแอปพลิเคชันภายในของกระทรวงฯ เพื่อเพิ่มประสิทธิภาพในการดำเนินงาน",
-        "ทำงานร่วมกับทีมผู้เชี่ยวชาญด้าน IT ในการจัดการระบบฐานข้อมูลและการรักษาความปลอดภัยของข้อมูล (Cybersecurity)",
-        "เรียนรู้และประยุกต์ใช้เทคโนโลยีสมัยใหม่ในการแก้ปัญหาจริงระดับองค์กร"
-      ] : [
-        "Developed internal systems and applications for the Ministry to improve operational efficiency.",
-        "Collaborated with IT experts in database management and cybersecurity.",
-        "Learned and applied modern technologies to solve real-world organizational problems."
-      ],
-      techStack: ['Intelligent Hub'] // เพิ่มหรือลดได้ตามจริง
-    }
-    // ถ้าอนาคตมีที่ฝึกงานเพิ่มเติม ก็ก๊อปปี้ Object นี้ต่อลงมาได้เลย
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [projRes, intRes, profRes] = await Promise.all([
+          fetch(`/api/projects`),
+          fetch(`/api/internships`),
+          fetch(`/api/profile`)
+        ]);
+        
+        if (projRes.ok) {
+          const data = await projRes.json();
+          setProjects(data);
+        }
+        if (intRes.ok) {
+          const data = await intRes.json();
+          setInternships(data);
+        }
+        if (profRes.ok) {
+          const data = await profRes.json();
+          if (data.id) setProfile(data);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -128,13 +75,13 @@ export default function Home() {
             <h3 className="text-xl leading-relaxed">
               {language === 'th' ? "ผมชื่อ" : "My name is"}{" "}
               <span className="font-bold text-blue-600 dark:text-blue-400">
-                {language === 'th' ? "นายธนกร ทิพย์วารีรัตนะ" : "Tanakorn Tipwarreerattana"}
+                {profile?.name || (language === 'th' ? "นายธนกร ทิพย์วารีรัตนะ" : "Tanakorn Tipwarreerattana")}
               </span>
               <br/>
-              {language === 'th' 
+              {profile?.bio || (language === 'th' 
                 ? "โดยผมมีความสนใจทางด้านการพัฒนาด้านเว็บแอพพลิเคชั่นทางด้าน Front-end เพราะผมมีทักษะทางด้านการดีไซน์และการใช้ framework ทางด้าน front-end เป็นหลักและพร้อมเรียนรู้ framework ใหม่ๆในอนาคตครับ"
                 : "I am interested in Front-end web application development because I have skills in design and using Front-end frameworks, and I am ready to learn new frameworks in the future."
-              }
+              )}
             </h3>
           </div>
         </div>
@@ -157,7 +104,7 @@ export default function Home() {
                 <RiAdminFill className="text-black dark:text-white text-3xl" />
                 <span>
                   <strong>{language === 'th' ? "ชื่อ :" : "Name :"}</strong>{" "}
-                  {language === 'th' ? "นายธนกร ทิพย์วารีรัตนะ" : "Tanakorn Tipwarreerattana"}
+                  {profile?.name || (language === 'th' ? "นายธนกร ทิพย์วารีรัตนะ" : "Tanakorn Tipwarreerattana")}
                 </span>
               </p>
               <p className="flex items-center gap-3">
@@ -176,7 +123,7 @@ export default function Home() {
               <p className="flex items-center gap-3">
                 <MdAttachEmail className="text-black dark:text-white text-3xl" />
                 <span>
-                  <strong>{language === 'th' ? "อีเมล :" : "Email :"}</strong> tanakorn.tip@student.mahidol.edu
+                  <strong>{language === 'th' ? "อีเมล :" : "Email :"}</strong> {profile?.email || "tanakorn.tip@student.mahidol.edu"}
                 </span>
               </p>
               <p className="flex items-center gap-3">
@@ -188,7 +135,7 @@ export default function Home() {
                 >
                   <FaLinkedin className="text-black dark:text-white text-3xl cursor-pointer" />
                   <span>
-                    <strong>LinkedIn :</strong> Tanakorn Tipwarreerattana
+                    <strong>LinkedIn :</strong> {profile?.name || "Tanakorn Tipwarreerattana"}
                   </span>
                 </a>
               </p>
@@ -252,18 +199,39 @@ export default function Home() {
           
 
           {/* วนลูปเรียกใช้ ProjectCard */}
-          {projects.map((project) => (
-            <ProjectCard
-              key={project.id}
-              title={project.title}
-              imageSrc={project.image}
-              description={project.description}
-              link={project.link}          
-              buttonText={project.buttonText}
-              type={project.type}
-              status={project.status}
-            />
-          ))}
+          {projects.map((project) => {
+            const type = project.tags?.[0] || 'website';
+            
+            let defaultLink = '#';
+            let defaultButtonText = '';
+            let targetType = type;
+
+            if (type === 'internal') {
+              defaultLink = `/projects/${project.id}`;
+              defaultButtonText = language === 'th' ? "อ่านรายละเอียด" : "Read Details";
+            } else if (type === 'github') {
+              defaultLink = project.githubUrl || project.projectUrl || '#';
+              defaultButtonText = "View on GitHub";
+            } else {
+              // website
+              defaultLink = project.projectUrl || project.githubUrl || '#';
+              defaultButtonText = language === 'th' ? "เยี่ยมชมเว็บไซต์" : "Visit Website";
+            }
+
+            return (
+              <ProjectCard
+                key={project.id}
+                id={project.id}
+                title={project.title}
+                imageSrc={project.imageUrl || project.image}
+                description={project.description}
+                link={defaultLink}
+                buttonText={defaultButtonText}
+                type={targetType}
+                status={project.tags?.[1] || 'success'}
+              />
+            );
+          })}
         </div>
       </section>
 
@@ -280,12 +248,13 @@ export default function Home() {
             {internships.map((internship) => (
               <InternshipSection 
                 key={internship.id}
+                id={internship.id}
                 role={internship.role}
                 company={internship.company}
-                duration={internship.duration}
-                responsibilities={internship.responsibilities}
-                techStack={internship.techStack}
-                logoSrc={internship.logoSrc}
+                duration={`${internship.startDate} - ${internship.endDate}`}
+                responsibilities={internship.description?.split('\n') || []}
+                techStack={[]}
+                logoSrc={internship.imageUrl || "/internship/logo exzy.jpg"}
               />
             ))}
           </div>
