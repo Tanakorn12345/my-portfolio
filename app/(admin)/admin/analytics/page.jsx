@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { FaMobileAlt, FaDesktop, FaTabletAlt, FaGlobe, FaClock, FaApple, FaWindows, FaAndroid, FaTrash, FaMapMarkerAlt, FaNetworkWired } from 'react-icons/fa'
+import { FaMobileAlt, FaDesktop, FaTabletAlt, FaGlobe, FaClock, FaApple, FaWindows, FaAndroid, FaTrash, FaMapMarkerAlt, FaNetworkWired, FaFileDownload } from 'react-icons/fa'
 import { useLanguage } from '@/app/context/LanguageContext'
 
 export default function AnalyticsAdmin() {
@@ -57,6 +57,29 @@ export default function AnalyticsAdmin() {
     }
   }
 
+  const handleExportJson = () => {
+    if (visitors.length === 0) {
+      alert(language === 'th' ? 'ไม่สามารถส่งออกได้เพราะไม่มีข้อมูล' : 'Cannot export because there is no data')
+      return
+    }
+
+    const exportData = visitors.map(v => ({
+      ...v,
+      locationInfo: ipInfo[v.ipAddress] || null
+    }))
+
+    const dataStr = JSON.stringify(exportData, null, 2)
+    const blob = new Blob([dataStr], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `visitors_log_${new Date().toISOString().split('T')[0]}.json`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  }
+
   const getDeviceIcon = (deviceStr) => {
     const d = (deviceStr || '').toLowerCase()
     if (d.includes('mobile') || d.includes('phone') || d.includes('iphone')) return <FaMobileAlt className="text-blue-500" />
@@ -88,6 +111,13 @@ export default function AnalyticsAdmin() {
             <p className="text-sm text-gray-500 dark:text-gray-400">{language === 'th' ? 'เข้าชมทั้งหมด' : 'Total Visits'}</p>
             <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{visitors.length} {language === 'th' ? 'ครั้ง' : 'views'}</p>
           </div>
+          <button
+            onClick={handleExportJson}
+            className="flex items-center gap-2 bg-green-50 hover:bg-green-100 text-green-600 dark:bg-green-900/20 dark:hover:bg-green-900/40 dark:text-green-400 px-4 py-3 rounded-xl shadow-sm border border-green-100 dark:border-green-900/30 transition-colors"
+          >
+            <FaFileDownload />
+            <span className="font-medium">{language === 'th' ? 'ส่งออก JSON' : 'Export JSON'}</span>
+          </button>
           <button
             onClick={handleClearLogs}
             disabled={loading || visitors.length === 0}
